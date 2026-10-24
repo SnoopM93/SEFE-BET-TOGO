@@ -1,19 +1,75 @@
 <!DOCTYPE html>
-<html><head>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEFE BET TOGO</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+body{background:#091a0b}
+.header{background:#0a3d12;color:#fff;padding:14px;text-align:center;font-weight:900}
+.ticket{background:#fff;margin:12px;border-radius:14px;overflow:hidden}
+.bundes{background:#0b3d91;color:#fff;padding:10px 14px;display:flex;justify-content:space-between;font-weight:800;font-size:13px}
+.top{display:flex;justify-content:space-between;align-items:center;padding:14px}
+.team{flex:1;text-align:center}
+.logo{width:72px;height:72px;margin:auto;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:28px;border:3px solid #e5e7eb}
+.name{font-size:11px;font-weight:800;margin-top:6px}
+.mid{text-align:center;flex:1}
+.label{font-size:11px;font-weight:800}
+.score{background:#1d5bff;color:#fff;font-size:34px;font-weight:900;padding:8px 20px;border-radius:10px;display:inline-block;margin-top:6px}
+.opts{display:flex;gap:8px;padding:10px;background:#f8fafc}
+.opt{flex:1;background:#fff;border:1.5px solid #c7e8c7;border-radius:10px;overflow:hidden;text-align:center}
+.opt-h{background:#00a651;color:#fff;font-size:9px;font-weight:800;padding:7px}
+.opt-b{font-size:38px;font-weight:900;color:#00a651;padding-top:8px}
+.opt-s{font-size:9px;font-weight:700;padding-bottom:8px}
+</style>
+</head>
+<body>
+
+<div class="header">SEFE BET TOGO • GRATUIT</div>
+
+<div id="coeur"></div>
+
+<!-- Chargement de l'architecture -->
 <script src="cerveau.js"></script>
 <script src="yeux.js"></script>
 <script src="ia.js"></script>
-</head>
-<body>
-<div id="coeur"></div>
+
 <script>
-  // Le cœur bat: il appelle le cerveau et les yeux
-  async function battementCoeur(){
-    let dataYeux = await YEUX.voir("Man City");
-    let calculCerveau = CERVEAU.mathematique(3,4,1.6,2.1,{dom:1,ext:0});
-    let decisionIA = IA.decider(calculCerveau, dataYeux);
-    document.getElementById('coeur').innerHTML = decisionIA;
-  }
-  battementCoeur();
+// ❤️ COEUR - Il affiche tout
+const ticketsData = [
+  { league: "LIGA2", dom: "RACING", domFull: "RACING<br>SANTANDER", ext: "ESPANYOL", colorD: "#16a34a", colorE: "#1d5bff" },
+  { league: "BUNDESLIGA", date: "SAM. 24 OCT. 2026", dom: "MAINZ 05", domFull: "MAINZ 05", ext: "WERDER BRÈME", colorD: "red", colorE: "#16a34a" }
+];
+
+function render() {
+  let html = "";
+  let cerveauData = CERVEAU.analyser();
+  
+  ticketsData.forEach((t, i) => {
+    let yeuxData = YEUX.voir(t.dom + " vs " + t.ext);
+    let iaData = IA.pronostiquer(cerveauData, yeuxData);
+    
+    html += `
+    <div class="ticket">
+      ${t.league === "BUNDESLIGA" ? `<div class="bundes"><span>⚽ ${t.league}</span><span>${t.date}</span></div>` : `<div style="padding:10px;font-size:12px;font-weight:800;color:#666">🏆 ${t.league} - SCORE EXACT</div>`}
+      <div class="top">
+        <div class="team"><div class="logo" style="border-color:${t.colorD};color:${t.colorD}">${t.dom[0]}</div><div class="name">${t.domFull}</div></div>
+        <div class="mid"><div class="label">SCORE EXACT</div><div class="score">${iaData.scoreExact}</div></div>
+        <div class="team"><div class="logo" style="border-color:${t.colorE};background:${t.colorE === '#16a34a' ? '#16a34a' : '#fff'};color:${t.colorE === '#16a34a' ? '#fff' : t.colorE}">${t.ext[0]}</div><div class="name">${t.ext}</div></div>
+      </div>
+      <div class="opts">
+        <div class="opt"><div class="opt-h">PLUS DE BUTS</div><div class="opt-b">${iaData.plusDeButs}</div><div class="opt-s">${iaData.plusSub}</div></div>
+        <div class="opt"><div class="opt-h">LES DEUX ÉQUIPES MARQUENT</div><div class="opt-b">${iaData.gg}</div><div class="opt-s">${iaData.ggSub}</div></div>
+      </div>
+    </div>`;
+  });
+  
+  document.getElementById('coeur').innerHTML = html;
+}
+
+render();
 </script>
-</body></html>
+
+</body>
+</html>
