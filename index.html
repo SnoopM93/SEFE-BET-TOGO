@@ -1,54 +1,104 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SEFE BET TOGO</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
 body{background:#0f1220;color:#fff}
-header{padding:16px 20px;display:flex;justify-content:space-between;border-bottom:1px solid #1e2238;position:sticky;top:0;background:#0f1220;z-index:10}
+header{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1e2238;position:sticky;top:0;background:#0f1220;z-index:10}
 .logo{font-weight:800;font-size:22px}.logo span{color:#8b5cf6}
-.banner{background:linear-gradient(135deg,#16a34a,#22c55e);margin:16px;border-radius:18px;padding:18px 20px;color:#fff}
-.tabs{display:flex;gap:10px;padding:0 16px;overflow-x:auto}.tab{padding:10px 18px;border-radius:12px;background:#1e2238;color:#94a3b8;border:none;font-weight:600}.tab.active{background:#16a34a;color:#fff}
-.leagues{display:flex;gap:10px;padding:16px;overflow-x:auto}.league{padding:8px 14px;border-radius:20px;background:#1e2238;border:1px solid #2a3050;color:#cbd5e1;font-size:13px;white-space:nowrap}.league.active{border-color:#22c55e;color:#fff}
+.banner{background:linear-gradient(135deg,#16a34a,#22c55e);margin:16px;border-radius:18px;padding:18px 20px}
+.tabs{display:flex;gap:10px;padding:0 16px;overflow-x:auto}.tab{padding:10px 18px;border-radius:12px;background:#1e2238;color:#94a3b8;border:none;font-weight:600;cursor:pointer}.tab.active{background:#16a34a;color:#fff}
+.leagues{display:flex;gap:10px;padding:16px;overflow-x:auto}.league{padding:8px 14px;border-radius:20px;background:#1e2238;border:1px solid #2a3050;color:#cbd5e1;font-size:13px;white-space:nowrap;cursor:pointer}.league.active{border-color:#22c55e;color:#fff;background:#1a2e1e}
 .match-group{padding:0 16px 16px}
-.match-card{background:#1a1e35;border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid #252a45}
+.match-card{background:#1a1e35;border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid #252a45;transition:0.3s}
+.match-card.hide{display:none}
 .match-top{color:#64748b;font-size:12px;display:flex;justify-content:space-between;margin-bottom:10px}
-.team{display:flex;justify-content:space-between;align-items:center;margin:8px 0}
 .prono{margin-top:12px;background:#0f1220;padding:12px;border-radius:10px;border-left:3px solid #22c55e}
-.prono-title{color:#22c55e;font-size:12px;font-weight:800;margin-bottom:4px}
 .cote{background:#22c55e;color:#000;font-weight:800;padding:4px 8px;border-radius:6px;font-size:12px}
+#menu{position:fixed;top:0;right:-100%;width:70%;height:100%;background:#161a2e;z-index:99;padding:20px;transition:0.3s}
+#menu.open{right:0}
 </style>
 </head>
 <body>
-<header><div class="logo">SEFE <span>BET</span> TOGO</div><div>🔔 ☰</div></header>
+<header>
+<div class="logo">SEFE <span>BET</span> TOGO</div>
+<div><span onclick="alert('🔔 3 nouveaux pronos aujourd\\'hui - Aston Villa, Arsenal, Stuttgart')" style="cursor:pointer">🔔</span> <span onclick="document.getElementById('menu').classList.add('open')" style="cursor:pointer">☰</span></div>
+</header>
+
+<div id="menu">
+<div onclick="this.parentElement.classList.remove('open')" style="text-align:right;font-size:20px;cursor:pointer">✕</div>
+<h3 style="margin-top:20px">MENU SEFE BET</h3>
+<p style="margin-top:20px" onclick="alert('Accueil')">🏠 Accueil</p>
+<p style="margin-top:15px" onclick="alert('Stats: 2258 pronos')">📊 Statistiques</p>
+<p style="margin-top:15px" onclick="alert('Contact: Lomé Togo')">📞 Contact</p>
+</div>
+
 <div class="banner"><b>✅ SEFE BET TOGO - ACCÈS LIBRE</b><br><small>2258 pronostics IA vérifiés • 100% gratuit • Sans paywall</small></div>
-<div class="tabs"><button class="tab active">Cette semaine</button><button class="tab">Aujourd'hui</button><button class="tab">Résultats</button></div>
-<div class="leagues"><button class="league active">Tous</button><button class="league">Premier League</button><button class="league">Ligue 1</button><button class="league">Bundesliga</button></div>
+
+<div class="tabs">
+<button class="tab active" data-filter="all">Cette semaine</button>
+<button class="tab" data-filter="today">Aujourd'hui</button>
+<button class="tab" data-filter="result">Résultats</button>
+</div>
+
+<div class="leagues">
+<button class="league active" data-league="all">Tous</button>
+<button class="league" data-league="premier">Premier League</button>
+<button class="league" data-league="ligue1">Ligue 1</button>
+<button class="league" data-league="bundes">Bundesliga</button>
+</div>
+
 <div class="match-group">
-
-<div class="match-card">
+<div class="match-card" data-league="premier" data-day="today">
 <div class="match-top"><span>Premier League • Villa Park</span><span>11:30</span></div>
-<div class="team"><b>🦁 Aston Villa</b><span class="cote">2.45</span></div>
-<div class="team"><b>💙 Man City</b><span>VS</span></div>
-<div class="prono"><div class="prono-title">✅ PRONO VÉRIFIÉ - NON ALÉATOIRE</div>X2 + Over 1.5 - Confiance 87% - Analyse forme réelle</div>
+<div style="display:flex;justify-content:space-between"><b>🦁 Aston Villa</b><span class="cote">2.45</span></div>
+<div style="display:flex;justify-content:space-between;margin-top:8px"><b>💙 Man City</b><span>VS</span></div>
+<div class="prono">✅ PRONO VÉRIFIÉ - X2 + Over 1.5 - 87%</div>
 </div>
 
-<div class="match-card">
-<div class="match-top"><span>Premier League</span><span>14:00</span></div>
-<div class="team"><b>🔴 Arsenal</b><span class="cote">1.65</span></div>
-<div class="team"><b>⚪ Tottenham</b></div>
-<div class="prono"><div class="prono-title">✅ PRONO VÉRIFIÉ</div>1 - Arsenal gagne - Analyse domicile 91%</div>
+<div class="match-card" data-league="premier" data-day="today">
+<div class="match-top"><span>Premier League • Emirates</span><span>14:00</span></div>
+<div style="display:flex;justify-content:space-between"><b>🔴 Arsenal</b><span class="cote">1.65</span></div>
+<div style="display:flex;justify-content:space-between;margin-top:8px"><b>⚪ Tottenham</b><span>VS</span></div>
+<div class="prono">✅ PRONO VÉRIFIÉ - 1 - Arsenal gagne</div>
 </div>
 
-<div class="match-card">
+<div class="match-card" data-league="ligue1" data-day="all">
+<div class="match-top"><span>Ligue 1 • Parc des Princes</span><span>20:00</span></div>
+<div style="display:flex;justify-content:space-between"><b>🔵 PSG</b><span class="cote">1.40</span></div>
+<div style="display:flex;justify-content:space-between;margin-top:8px"><b>⚪ Marseille</b><span>VS</span></div>
+<div class="prono">✅ PRONO VÉRIFIÉ - 1 + Over 2.5</div>
+</div>
+
+<div class="match-card" data-league="bundes" data-day="all">
 <div class="match-top"><span>Bundesliga</span><span>14:30</span></div>
-<div class="team"><b>🔴 Stuttgart</b><span class="cote">1.90</span></div>
-<div class="team"><b>⚫ Gladbach</b></div>
-<div class="prono"><div class="prono-title">✅ SAFE DU JOUR</div>Stuttgart 1 + Over 1.5 - SAFE vérifié</div>
+<div style="display:flex;justify-content:space-between"><b>🔴 Stuttgart</b><span class="cote">1.90</span></div>
+<div style="display:flex;justify-content:space-between;margin-top:8px"><b>⚫ Gladbach</b><span>VS</span></div>
+<div class="prono">✅ SAFE DU JOUR - 1 + Over 1.5</div>
+</div>
 </div>
 
-</div>
+<script>
+// Filtres ligues
+document.querySelectorAll('.league').forEach(btn=>{
+ btn.addEventListener('click',()=>{
+  document.querySelectorAll('.league').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  let league=btn.dataset.league;
+  document.querySelectorAll('.match-card').forEach(card=>{
+   if(league==='all' || card.dataset.league===league){card.classList.remove('hide')}else{card.classList.add('hide')}
+  });
+ });
+});
+// Filtres jours
+document.querySelectorAll('.tab').forEach(btn=>{
+ btn.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+ });
+});
+</script>
 </body>
 </html>
