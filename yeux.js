@@ -1,23 +1,32 @@
-// 👀 YEUX - Analyse, il regarde les matchs
+// 👀 YEUX - Analyse avec vraies données API
 const YEUX = {
-  voir: function(match) {
+  // Base de données championnats
+  championnats: {
+    "BUNDESLIGA": { id: "BL1", pays: "Allemagne", logo: "⚽" },
+    "LIGA2": { id: "SD", pays: "Espagne", logo: "🏆" },
+    "PREMIER_LEAGUE": { id: "PL", pays: "Angleterre", logo: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" },
+    "LIGUE1": { id: "FL1", pays: "France", logo: "🇫🇷" }
+  },
+
+  analyserMatch: function(matchAPI) {
+    // matchAPI vient de l'API réelle
     return {
-      match: match,
-      tendance: "Plus de 1,5 buts",
-      buts: "Les deux marquent",
-      xG: 2.8,
-      confiance: 91,
-      analyse: `Match ${match} analysé: GG + Over 1.5 validé`
+      id: matchAPI.id,
+      championnat: matchAPI.competition,
+      domicile: matchAPI.homeTeam,
+      exterieur: matchAPI.awayTeam,
+      statsDom: matchAPI.homeStats, // attaque, defense, forme
+      statsExt: matchAPI.awayStats,
+      xG: matchAPI.xG,
+      confiance: this.calculerConfiance(matchAPI)
     };
   },
-  
-  analyserTous: function() {
-    return [
-      this.voir("Racing Santander vs Espanyol"),
-      this.voir("Mainz 05 vs Werder Brême")
-    ];
+
+  calculerConfiance: function(match) {
+    // Confiance basée sur données, pas random
+    let conf = 50;
+    if (match.xG > 2.5) conf += 20;
+    if (match.formeDiff < 3) conf += 15;
+    return Math.min(conf, 95);
   }
 };
-
-console.log("👀 Yeux ouverts");
-if (typeof module !== 'undefined') module.exports = YEUX;
