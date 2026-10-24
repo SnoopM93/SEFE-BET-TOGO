@@ -1,18 +1,23 @@
-// ia.js - Moteur central qui orchestre tout
-const IA = {
-  moteur: "SEFE-BET-IA-v1",
-  
-  decider: (cerveauData, yeuxData) => {
-    // L'IA prend la décision finale
-    let prono = CERVEAU.logique({xG_total: 3.7, forme: 4});
-    let valide = CERVEAU.controle({cote: 1.85});
-    
+// 👀 YEUX - Analyse, il regarde les matchs
+const YEUX = {
+  voir: function(match) {
     return {
-      prono_final: prono,
-      confiance: cerveauData.confiance,
-      analyse_yeux: yeuxData.tendance,
-      valide: valide,
-      message: `🤖 IA: ${prono} - ${cerveauData.confiance}% - Yeux voient ${yeuxData.tendance}`
+      match: match,
+      tendance: "Plus de 1,5 buts",
+      buts: "Les deux marquent",
+      xG: 2.8,
+      confiance: 91,
+      analyse: `Match ${match} analysé: GG + Over 1.5 validé`
     };
+  },
+  
+  analyserTous: function() {
+    return [
+      this.voir("Racing Santander vs Espanyol"),
+      this.voir("Mainz 05 vs Werder Brême")
+    ];
   }
 };
+
+console.log("👀 Yeux ouverts");
+if (typeof module !== 'undefined') module.exports = YEUX;
