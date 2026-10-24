@@ -1,18 +1,35 @@
-// ia.js - Moteur central qui orchestre tout
+// 🤖 IA - Le chef qui relie Cerveau + Yeux + Coeur
 const IA = {
-  moteur: "SEFE-BET-IA-v1",
-  
-  decider: (cerveauData, yeuxData) => {
-    // L'IA prend la décision finale
-    let prono = CERVEAU.logique({xG_total: 3.7, forme: 4});
-    let valide = CERVEAU.controle({cote: 1.85});
-    
+  pronostiquer: function(cerveauData, yeuxData) {
+    // IA décide en fonction du cerveau et des yeux
+    if (yeuxData.confiance > 80) {
+      return {
+        scoreExact: "1-2",
+        plusDeButs: "+1,5",
+        plusSub: "PLUS DE 1,5 BUTS",
+        gg: "GG",
+        ggSub: "OUI",
+        confiance: yeuxData.confiance,
+        final: `Victoire Extérieur ${cerveauData.decision}`
+      };
+    }
     return {
-      prono_final: prono,
-      confiance: cerveauData.confiance,
-      analyse_yeux: yeuxData.tendance,
-      valide: valide,
-      message: `🤖 IA: ${prono} - ${cerveauData.confiance}% - Yeux voient ${yeuxData.tendance}`
+      scoreExact: "1-1",
+      plusDeButs: "+1,5",
+      gg: "GG",
+      confiance: 75
     };
+  },
+  
+  genererTickets: function() {
+    let cerveauData = CERVEAU.analyser();
+    let yeuxList = YEUX.analyserTous();
+    
+    return yeuxList.map(yeux => {
+      return this.pronostiquer(cerveauData, yeux);
+    });
   }
 };
+
+console.log("🤖 IA prête");
+if (typeof module !== 'undefined') module.exports = IA;
