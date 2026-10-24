@@ -1,8 +1,27 @@
+// 🧠 CERVEAU - Conscience, Logique, Mathématique, Contrôle
 const CERVEAU = {
-  conscience: "SEFE BET GRATUIT - Jamais de paiement",
-  mathematique: (fDom,fExt,xgD,xgE,bless) => {
-    let sD = (fDom*0.4)+(xgD*0.4)-(bless.dom*0.2);
-    let sE = (fExt*0.4)+(xgE*0.4)-(bless.ext*0.2);
-    return {sD,sE,confiance:Math.round(70+Math.abs(sD-sE)*10)};
+  conscience: "Je suis SEFE, je contrôle tout",
+  
+  logique: function(domicile, exterieur) {
+    let forceD = domicile * 1.2;
+    let forceE = exterieur * 1.1;
+    return {
+      forceD: forceD.toFixed(1),
+      forceE: forceE.toFixed(1),
+      controle: forceE > forceD ? "EXTERIEUR" : "DOMICILE",
+      decision: forceE > forceD ? "1-2" : "2-1"
+    };
+  },
+  
+  mathematique: function(cote1, cote2) {
+    return (cote1 * cote2).toFixed(2);
+  },
+  
+  analyser: function() {
+    console.log("🧠 Cerveau activé:", this.conscience);
+    return this.logique(3, 4);
   }
 };
+
+// Export pour index.html
+if (typeof module !== 'undefined') module.exports = CERVEAU;
