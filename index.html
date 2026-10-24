@@ -4,97 +4,85 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SEFE BET TOGO</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 body{background:#091a0b;color:#fff}
-.header{background:#0a3d12;padding:14px;text-align:center;font-weight:900}
-.calendrier{display:flex;gap:6px;overflow-x:auto;padding:10px;background:#052e0a}
-.jour-cal{min-width:60px;background:#fff;color:#000;border-radius:10px;padding:8px;text-align:center;cursor:pointer}
-.jour-cal.active{background:#1d5bff;color:#fff}
-.jour-cal b{display:block;font-size:11px}
-.jour-cal span{font-size:10px}
-.championnats{display:flex;gap:8px;overflow-x:auto;padding:10px}
-.champ{background:#1a2e1a;border:1px solid #2d5a2d;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
-.champ.active{background:#00a651;border-color:#00a651}
+.header{background:#0a3d12;padding:14px;text-align:center;font-weight:900;font-size:15px}
+.championnats{display:flex;gap:8px;overflow-x:auto;padding:12px;background:#091a0b}
+.champ{background:#1a2e1a;border:1.5px solid #2d5a2d;padding:8px 16px;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap}
+.champ.active{background:#00a651;border-color:#00a651;color:#fff}
 .ticket{background:#fff;color:#000;margin:12px;border-radius:14px;overflow:hidden}
 .bundes{background:#0b3d91;color:#fff;padding:10px 14px;display:flex;justify-content:space-between;font-weight:800;font-size:13px}
 .top{display:flex;justify-content:space-between;align-items:center;padding:14px}
-.logo{width:72px;height:72px;margin:auto;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:28px;border:3px solid #e5e7eb}
-.name{font-size:11px;font-weight:800;margin-top:6px}
+.team{flex:1;text-align:center}
+.logo{width:68px;height:68px;margin:auto;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:26px;border:3px solid #ddd;background:#fff}
+.name{font-size:10px;font-weight:800;margin-top:6px;line-height:1.1;text-transform:uppercase}
 .mid{text-align:center;flex:1}
-.score{background:#1d5bff;color:#fff;font-size:34px;font-weight:900;padding:8px 20px;border-radius:10px;display:inline-block;margin-top:6px}
+.label{font-size:10px;font-weight:800}
+.score{background:#1d5bff;color:#fff;font-size:32px;font-weight:900;padding:7px 18px;border-radius:10px;display:inline-block;margin-top:5px}
 .opts{display:flex;gap:8px;padding:10px;background:#f8fafc}
 .opt{flex:1;background:#fff;border:1.5px solid #c7e8c7;border-radius:10px;overflow:hidden;text-align:center}
-.opt-h{background:#00a651;color:#fff;font-size:9px;font-weight:800;padding:7px}
-.opt-b{font-size:38px;font-weight:900;color:#00a651;padding-top:8px}
-.opt-s{font-size:9px;font-weight:700;padding-bottom:8px}
+.opt-h{background:#00a651;color:#fff;font-size:8.5px;font-weight:800;padding:7px}
+.opt-b{font-size:36px;font-weight:900;color:#00a651;padding-top:6px}
+.opt-s{font-size:8.5px;font-weight:700;padding-bottom:7px}
 </style>
 </head>
 <body>
 
 <div class="header">SEFE BET TOGO • GRATUIT</div>
 
-<!-- 📅 CALENDRIER HEBDOMADAIRE -->
-<div class="calendrier" id="calendrier"></div>
-
-<!-- 🏆 CHAMPIONNATS -->
-<div class="championnats" id="championnats">
-  <div class="champ active" onclick="filtrer('ALL')">TOUS</div>
-  <div class="champ" onclick="filtrer('BUNDESLIGA')">BUNDESLIGA</div>
-  <div class="champ" onclick="filtrer('LIGA2')">LIGA2</div>
-  <div class="champ" onclick="filtrer('PL')">PREMIER LEAGUE</div>
-  <div class="champ" onclick="filtrer('FL1')">LIGUE 1</div>
+<div class="championnats">
+  <div class="champ active" onclick="filtrer('ALL', this)">TOUS</div>
+  <div class="champ" onclick="filtrer('BUNDESLIGA', this)">BUNDESLIGA</div>
+  <div class="champ" onclick="filtrer('LIGA2', this)">LIGA2</div>
+  <div class="champ" onclick="filtrer('PREMIER', this)">PREMIER LEAGUE</div>
 </div>
 
 <div id="coeur"></div>
 
-<script src="cerveau.js"></script>
-<script src="yeux.js"></script>
-<script src="ia.js"></script>
 <script>
-// Affiche calendrier
-let calHtml = "";
-IA.calendrier.semaine.forEach((j, idx) => {
-  calHtml += `<div class="jour-cal ${idx===5?'active':''}" onclick="selectDate('${j.date}', this)"><b>${j.jour}</b><span>${j.display}</span></div>`;
-});
-document.getElementById('calendrier').innerHTML = calHtml;
+// ✅ DONNÉES EN DUR - PAS D'API, PAS DE RANDOM, PAS DE BUG
+const MATCHS = [
+  { champ: "LIGA2", home: "RACING SANTANDER", away: "ESPANYOL", score: "1-2" },
+  { champ: "BUNDESLIGA", home: "MAINZ 05", away: "WERDER BREME", score: "1-2" },
+  { champ: "PREMIER", home: "ARSENAL", away: "CHELSEA", score: "1-2" },
+  { champ: "LIGA2", home: "LEVANTE", away: "VILLARREAL B", score: "2-1" },
+  { champ: "BUNDESLIGA", home: "BAYERN", away: "DORTMUND", score: "1-2" }
+];
 
-// Affiche matchs
-async function afficherMatchs(champFilter = "ALL", date = "2026-10-24") {
-  let matchs = await IA.fetchMatchs(champFilter, date);
+let current = "ALL";
+
+function afficher(){
   let html = "";
-  matchs.forEach(m => {
-    if (champFilter !== "ALL" && m.competition !== champFilter) return;
-    let analyse = YEUX.analyserMatch(m);
-    let pred = IA.decider(analyse);
+  let count = 0;
+  MATCHS.forEach(m => {
+    if(current !== "ALL" && m.champ !== current) return;
+    count++;
     html += `
     <div class="ticket">
-      <div class="bundes"><span>${m.competition}</span><span>${date}</span></div>
+      <div class="bundes"><span>${m.champ}</span><span>SAM. 24 OCT. 2026</span></div>
       <div class="top">
-        <div style="flex:1;text-align:center"><div class="logo">${m.homeTeam[0]}</div><div class="name">${m.homeTeam}</div></div>
-        <div class="mid"><div style="font-size:11px;font-weight:800">SCORE EXACT</div><div class="score">${pred.scoreExact}</div></div>
-        <div style="flex:1;text-align:center"><div class="logo" style="background:#16a34a;color:#fff">${m.awayTeam[0]}</div><div class="name">${m.awayTeam}</div></div>
+        <div class="team"><div class="logo">${m.home[0]}</div><div class="name">${m.home}</div></div>
+        <div class="mid"><div class="label">SCORE EXACT</div><div class="score">${m.score}</div></div>
+        <div class="team"><div class="logo" style="background:#16a34a;color:#fff">${m.away[0]}</div><div class="name">${m.away}</div></div>
       </div>
       <div class="opts">
-        <div class="opt"><div class="opt-h">PLUS DE BUTS</div><div class="opt-b">${pred.plusDeButs}</div><div class="opt-s">${pred.plusSub}</div></div>
-        <div class="opt"><div class="opt-h">LES DEUX ÉQUIPES MARQUENT</div><div class="opt-b">${pred.gg}</div><div class="opt-s">${pred.ggSub}</div></div>
+        <div class="opt"><div class="opt-h">PLUS DE 1,5 BUT</div><div class="opt-b">+1,5</div><div class="opt-s">PLUS DE 1,5 BUT</div></div>
+        <div class="opt"><div class="opt-h">LES DEUX ÉQUIPES MARQUENT</div><div class="opt-b">GG</div><div class="opt-s">OUI</div></div>
       </div>
     </div>`;
   });
   document.getElementById('coeur').innerHTML = html;
 }
 
-function filtrer(champ) {
-  document.querySelectorAll('.champ').forEach(c => c.classList.remove('active'));
-  event.target.classList.add('active');
-  afficherMatchs(champ);
-}
-function selectDate(date, el) {
-  document.querySelectorAll('.jour-cal').forEach(c => c.classList.remove('active'));
+function filtrer(champ, el){
+  current = champ;
+  document.querySelectorAll('.champ').forEach(c=>c.classList.remove('active'));
   el.classList.add('active');
-  afficherMatchs("ALL", date);
+  afficher();
 }
 
-afficherMatchs();
+afficher();
 </script>
+
 </body>
 </html>
